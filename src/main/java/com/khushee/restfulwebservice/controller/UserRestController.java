@@ -51,7 +51,9 @@ public class UserRestController {
     @PostMapping("/new-user")
     public Response<User> createUser(@RequestBody User user){
         try{
-         return Response.<User>createSuccess().setPayload(user).setMessage("User has been Created !");
+         int result = userService.createNewUser(user);
+             return Response.<User>createSuccess().setPayload(user).setMessage("User has been Created !");
+
         }catch (Exception e){
             return Response.<User>exception().setMessage("Cannot create User");
         }
