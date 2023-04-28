@@ -3,9 +3,9 @@ package com.khushee.restfulwebservice.repository;
 import com.khushee.restfulwebservice.model.Account;
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
+import com.khushee.restfulwebservice.model.resquest.UserRequest;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -17,14 +17,15 @@ public interface UserRepository {
     @Result(column = "id", property = "userId")
 
     List<User> allUsers();
-    @Insert("insert into users_tb (username, gender, address)\n" +
-            "values (#{user.username},#{user.gender}, #{user.address})")
-    int createNewUser(@Param("user") User user);
+    @Select("insert into users_tb (username, gender, address)\n" +
+            "values (#{user.username},#{user.gender}, #{user.address}) returning id")
+    int createNewUser(@Param("user") UserRequest user);
 
     @Update("update users_tb\n" +
             "set username = #{user.username}, gender = #{user.gender}, address = #{user.address}\n" +
             "where id = #{id}")
-    int updateUser(@PathVariable  User user,int id);
+    int updateUser(@Param("user") UserRequest user, int id);
+//    int updateUser(@PathVariable  User user,int id);
 
     @Result(property = "userId", column = "id")
     @Select("select  * from users_tb where id = #{id}")

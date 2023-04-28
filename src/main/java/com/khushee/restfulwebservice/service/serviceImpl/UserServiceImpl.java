@@ -2,6 +2,7 @@ package com.khushee.restfulwebservice.service.serviceImpl;
 
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
+import com.khushee.restfulwebservice.model.resquest.UserRequest;
 import com.khushee.restfulwebservice.repository.UserRepository;
 import com.khushee.restfulwebservice.service.UserService;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int createNewUser(User user) {
+    public int createNewUser(UserRequest user) {
         return userRepository.createNewUser(user);
     }
 
     @Override
-    public int updateUser(User user, int id) {
+    public int updateUser(UserRequest user, int id) {
         return userRepository.updateUser(user,id);
     }
 

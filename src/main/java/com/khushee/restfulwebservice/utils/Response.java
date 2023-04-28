@@ -23,6 +23,12 @@ public class Response<T> {
     private Status status;
 
 //create the method
+    public static <T> Response<T>badRequest(){
+        Response<T> response = new Response<>();
+        response.setStatus(Status.BAD_REQUEST);
+        response.setSuccess(false);
+        return (response);
+    }
     public static <T> Response<T>ok(){
         Response<T> response = new Response<>();
         response.setSuccess(true);
