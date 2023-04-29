@@ -5,9 +5,11 @@ import com.khushee.restfulwebservice.model.UserAccount;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
 import com.khushee.restfulwebservice.service.UserService;
 import com.khushee.restfulwebservice.utils.Response;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -64,7 +66,7 @@ public class UserRestController {
 //       }
 //    }
     @PostMapping("/new-user")
-    public Response<User> createUser(@RequestBody UserRequest request){
+    public Response<User> createUser(@Valid  @RequestBody UserRequest request){
        try{
           int userID = userService.createNewUser(request) ;
           if(userID>0){
@@ -129,18 +131,31 @@ public class UserRestController {
 //        }
 //    }
 
-    @DeleteMapping("/remove-user/{id}")
-    public Response<User> deleteUserById(@PathVariable int id){
+    @DeleteMapping("/{id}")
+    public Response<?>deleteUser(@PathVariable int id){
         try{
-            if(isUserExist(id)){
-                userService.removeUser(id);
-                return Response.<User>deleteSuccess().setMessage("User has been deleted!");
+            int affectRow = userService.removeUser(id);
+            if(affectRow>0){
+                return Response.<Object>deleteSuccess().setMessage("Successfully remove the user !").setSuccess(true);
             }else {
-                return notFondUser(id);
+                return Response.<Object>notFound().setMessage("User with id ="+id+"doesn't exist int our system");
             }
         }catch (Exception e){
-            return Response.<User>exception().setMessage("Delete not Success!!!");
+            return Response.<Object>exception().setMessage("Exception occurred! failed to detete the user!").setSuccess(false);
         }
     }
+
+//    public Response<User> deleteUserById(@PathVariable int id){
+//        try{
+//            if(isUserExist(id)){
+//                userService.removeUser(id);
+//                return Response.<User>deleteSuccess().setMessage("User has been deleted!");
+//            }else {
+//                return notFondUser(id);
+//            }
+//        }catch (Exception e){
+//            return Response.<User>exception().setMessage("Delete not Success!!!");
+//        }
+//    }
 
 }

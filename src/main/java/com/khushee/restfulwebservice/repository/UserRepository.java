@@ -4,6 +4,7 @@ import com.khushee.restfulwebservice.model.Account;
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
+import jakarta.validation.Valid;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public interface UserRepository {
     List<User> allUsers();
     @Select("insert into users_tb (username, gender, address)\n" +
             "values (#{user.username},#{user.gender}, #{user.address}) returning id")
-    int createNewUser(@Param("user") UserRequest user);
+    int createNewUser( @Param("user") UserRequest user);
 
     @Update("update users_tb\n" +
             "set username = #{user.username}, gender = #{user.gender}, address = #{user.address}\n" +
@@ -30,8 +31,7 @@ public interface UserRepository {
     @Result(property = "userId", column = "id")
     @Select("select  * from users_tb where id = #{id}")
     User findUserByID(int id );
-    @Delete("delete from users_tb\n" +
-            "where id = #{id}")
+    @Delete("DELETE FROM users_tb WHERE id=#{id}")
     int removeUser(int id );
 
     @Results({
