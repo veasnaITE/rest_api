@@ -1,5 +1,6 @@
 package com.khushee.restfulwebservice.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
@@ -29,13 +30,14 @@ public class UserRestController {
     }
 
     @GetMapping("/all-users")
-    public Response<List<User>>getAllUser(){
+    public Response<PageInfo<User>>getAllUser(@RequestParam (defaultValue = "1") int page, @RequestParam (defaultValue = "5") int size,@RequestParam (defaultValue = " ") String username){
+
         try{
-            List<User> users = userService.allUsers();
-            return Response.<List<User>>ok().setPayload(users).setMessage("Successfully Retrieved all users!");
+            PageInfo<User> users = userService.allUsers(page, size,username);
+            return Response.<PageInfo<User>>ok().setPayload(users).setMessage("Successfully Retrieved all users!");
 
         }catch (Exception e){
-            return Response.<List<User>>exception().setMessage("Fail to retried users!");
+            return Response.<PageInfo<User>>exception().setMessage("Fail to retried users!");
         }
     }
     @GetMapping("/{id}")
@@ -80,15 +82,15 @@ public class UserRestController {
        }
     }
 
-    @GetMapping("/user-accounts")
-    public Response<List<User>>getAllUserAccounts(){
-        try{
-            List<User> response = userService.allUsers();
-            return Response.<List<User>>ok().setPayload(response).setMessage("Successfully retrieved all users! ");
-        }catch (Exception e){
-            return Response.<List<User>>exception().setMessage("Failed to retrieved the Users Exception occured !");
-        }
-    }
+//    @GetMapping("/user-accounts")
+//    public Response<List<User>>getAllUserAccounts(){
+//        try{
+//            List<User> response = userService.allUsers();
+//            return Response.<List<User>>ok().setPayload(response).setMessage("Successfully retrieved all users! ");
+//        }catch (Exception e){
+//            return Response.<List<User>>exception().setMessage("Failed to retrieved the Users Exception occured !");
+//        }
+//    }
 
 
     @PutMapping("/{id}")

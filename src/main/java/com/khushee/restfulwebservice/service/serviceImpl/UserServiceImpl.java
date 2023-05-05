@@ -1,5 +1,7 @@
 package com.khushee.restfulwebservice.service.serviceImpl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
@@ -15,8 +17,11 @@ public class UserServiceImpl implements UserService {
         this.userRepository=userRepository;
     }
     @Override
-    public List<User> allUsers() {
-        return userRepository.allUsers();
+
+    public PageInfo<User> allUsers(int page, int size,String filterName) {
+        //pageHelper is here
+        PageHelper.startPage(page,size);
+        return new PageInfo<>(userRepository.allUsers(filterName));
     }
 
     @Override

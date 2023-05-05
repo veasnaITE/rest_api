@@ -1,23 +1,22 @@
 package com.khushee.restfulwebservice.repository;
-
 import com.khushee.restfulwebservice.model.Account;
 import com.khushee.restfulwebservice.model.User;
 import com.khushee.restfulwebservice.model.UserAccount;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
-import jakarta.validation.Valid;
+import com.khushee.restfulwebservice.repository.provider.UserProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @Mapper
 @Repository
 public interface UserRepository {
-    @Select("select * from users_tb")
+//    @Select("select * from users_tb")
     @Result(column = "id", property = "userId")
+    @SelectProvider(type= UserProvider.class,method = "getAllUser")
 
-    List<User> allUsers();
+    List<User> allUsers(String filterName);
     @Select("insert into users_tb (username, gender, address)\n" +
             "values (#{user.username},#{user.gender}, #{user.address}) returning id")
     int createNewUser( @Param("user") UserRequest user);
@@ -27,7 +26,6 @@ public interface UserRepository {
             "where id = #{id}")
     int updateUser(@Param("user") UserRequest user, int id);
 //    int updateUser(@PathVariable  User user,int id);
-
     @Result(property = "userId", column = "id")
     @Select("select  * from users_tb where id = #{id}")
     User findUserByID(int id );
@@ -53,4 +51,15 @@ public interface UserRepository {
             "        a on a.id = user_account_tb.account_id\n" +
             "    where user_id = #{id};")
     List<Account> findAccountsByUserId(int id);
+
+//    1.Loop queries
+//    2.proiveders
+//    3.pagination
+//    4.file upload file
+//    4.1 upload file
+//            4.2 multi file uplaod
+//    4.3
+
+
+
 }
