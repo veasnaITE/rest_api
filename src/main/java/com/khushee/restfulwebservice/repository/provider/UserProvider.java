@@ -1,7 +1,5 @@
 package com.khushee.restfulwebservice.repository.provider;
-
 import org.apache.ibatis.jdbc.SQL;
-
 public class UserProvider {
     public static String getAllUser(String filterName){
         return new SQL(){{

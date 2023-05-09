@@ -9,9 +9,6 @@ import com.khushee.restfulwebservice.utils.Response;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
-
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
