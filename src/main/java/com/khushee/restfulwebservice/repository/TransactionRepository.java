@@ -33,8 +33,9 @@ public interface TransactionRepository {
 
     UserTransaction getUserTransactionByID(int id);
     @InsertProvider(type = TransactionProvider.class, method = "createNewTransaction")
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     int createNewTransaction(@Valid Transaction transaction);
-    // @DeleteProvider(type = TransactionRepository.class,method = "deleteTransactionById")
+     @DeleteProvider(type = TransactionProvider.class,method = "deleteTransactionById")
      int deleteTransaction(@Param("id") int id);
     @SelectProvider(type = TransactionProvider.class,method = "getUserTransactionByID")
     @Results({

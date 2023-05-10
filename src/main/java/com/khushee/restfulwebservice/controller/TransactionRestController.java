@@ -6,6 +6,7 @@ import com.khushee.restfulwebservice.model.UserTransaction;
 import com.khushee.restfulwebservice.model.resquest.UserRequest;
 import com.khushee.restfulwebservice.service.TransactionService;
 import com.khushee.restfulwebservice.utils.Response;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +42,6 @@ public Response<List<Transaction>>findTransactionByID(@PathVariable int id){
         return Response.<List<Transaction>>exception().setMessage("Failed to retrieved user with id: "+id );
     }
 }
-
     @DeleteMapping("/{id}")
     public Response<?> deleteTransactionById(@PathVariable int id){
         try {
@@ -54,9 +54,20 @@ public Response<List<Transaction>>findTransactionByID(@PathVariable int id){
             return Response.<Transaction>exception().setMessage("Exception Occurs!!!!Failed to remove the Transaction").setSuccess(false);
         }
     }
-
-
-
+    @PostMapping("/new-transaction")
+    public Response<Transaction>createTransaction(@Valid @RequestBody Transaction transaction){
+    try{
+        int affect = transactionService.creatTransaction(transaction);
+        if(affect>0){
+            return Response.<Transaction>createSuccess().setPayload(transaction).setMessage("Create Account Successfully");
+        }else {
+            return Response.<Transaction>badRequest().setMessage("Can not Create new transaction").setSuccess(false);
+        }
+    }catch (Exception e){
+        e.printStackTrace();
+        return Response.<Transaction>exception().setMessage("Faild to Create Transaction").setSuccess(false);
+    }
+    }
 
 }
 
